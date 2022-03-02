@@ -3,6 +3,9 @@ import * as fs from "fs";
 
 const app = express();
 
+// setting up the view engine
+app.use("view engine", "pug");
+
 // log out the requests
 app.use("/", (req, res, next) => {
   console.log(req.method, req.url);

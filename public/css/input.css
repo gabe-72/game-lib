@@ -1,0 +1,23 @@
+button, input, textarea, select {
+  transition-duration: 0.4s;
+  background-color: #1b1b1b;
+  border: 1px solid #454545;
+  font-size: 0.9em;
+  padding: 0.2em 0.5em;
+}
+input:hover, textarea:hover, select:hover {
+  transition-duration: 0.4s;
+  background-color: #454545;
+}
+input:focus, textarea:focus, select:focus {
+  background-color: #454545;
+}
+
+button {
+  padding: 0.3em 1.0em;
+}
+button:hover {
+  transition-duration: 0.4s;
+  background-color: #454545;
+  cursor: pointer;
+}
