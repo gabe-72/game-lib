@@ -1,6 +1,4 @@
 import express from "express";
-import * as fs from "fs";
-
 const app = express();
 
 // setting up the view engine
@@ -12,7 +10,6 @@ app.use("/", (req, res, next) => {
   next();
 });
 app.use(express.static("public"));
-app.use(express.static("initDatabase/assets"));
 
 // start the server on port 3000
 app.listen(3000, () => {

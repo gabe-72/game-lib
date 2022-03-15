@@ -7,6 +7,7 @@ const APPIDS_PATH = "./initDatabase/assets/steamAppDetails.json";
 const REQ_URL = "https://store.steampowered.com/api/appdetails?appids=";
 
 // get the appdetails
+console.log("Getting appdetails...");
 const appdetails = getAppDetails();
 
 // connect to the database
@@ -16,6 +17,8 @@ let db = new sqlite3.Database("./game_lib.db", (err) => {
 });
 
 // TODO: insert into db
+for (let i = 0; i < appdetails.length; ++i) {
+}
 
 // closing the connection
 db.close((err) => {
