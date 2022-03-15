@@ -1,6 +1,44 @@
 * {
-  background-color: black;
   color: white;
-  font-family: Garamond;
-  font-size: 22px;
+  font-family: "Calibri";
+  font-size: 18px;
+}
+
+body {
+  background-color: #262626;
+  margin: 0px;
+}
+
+a {
+  text-decoration: none;
+  background-color: transparent;
+}
+
+.btn {
+  padding: 10px;
+  border-radius: 4px;
+  background-color: inherit;
+}
+.btn:hover {
+  cursor: pointer;
+  background-color: #434343;
+  transition-duration: 200ms;
+}
+
+/* Header styles */
+#header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 5px 40px;
+  background-color: #000000;
+}
+#search {
+  width: 300px;
+}
+.row {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  background-color: transparent;
 }

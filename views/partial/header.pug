@@ -1,0 +1,19 @@
+#header
+  .row
+    a(href="/home")
+      .btn Home
+    a(href="/games")
+    .btn All Games
+    input#search(type="search" placeholder="Search...")
+  if user.loggedin
+    .row
+      a(href="/user/"+user.userid)
+        .btn My Account
+      a(href="/logout")
+        .btn Logout
+  else
+    .row
+      a(href="/register")
+        .btn Sign Up
+      a(href="/login")
+        .btn Log In
