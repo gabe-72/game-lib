@@ -1,5 +1,13 @@
 import express from "express";
-const app = express();
+import sqlite3 from "sqlite3";
+
+const app = express(); // setup express
+
+// connect to the db
+let db = new sqlite3.Database("./game_lib.db", (err) => {
+  if (err) return console.error(err.message);
+  console.log("Connected to database");
+});
 
 // setting up the view engine
 app.set("view engine", "pug");
@@ -11,8 +19,23 @@ app.use("/", (req, res, next) => {
 });
 app.use(express.static("public"));
 
+
 // GET routes
+app.get("/games", gamesQuery, sendGames);
 app.get("/home", sendHomepage);
+
+
+function sendGames(req, res) {
+  console.log(req.name);
+  res.sendStatus(200);
+}
+
+function gamesQuery(req, res, next) {
+  req.name = "";
+  if ("name" in req.query)
+    req.name = decodeURIComponent(req.query.name);
+  next();
+}
 
 function sendHomepage(req, res) {
   res.render("pages/homepage", { user: {loggedin: true, userid: 10} });

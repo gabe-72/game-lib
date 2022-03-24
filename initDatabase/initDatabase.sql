@@ -31,7 +31,7 @@ CREATE TABLE sold_in(
 
 CREATE TABLE genres(
   genre_id INTEGER PRIMARY KEY,
-  genre TEXT NOT NULL -- genre name
+  genre TEXT UNIQUE NOT NULL -- genre name
 );
 
 CREATE TABLE genre_of(

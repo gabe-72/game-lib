@@ -25,6 +25,16 @@ a {
   transition-duration: 200ms;
 }
 
+.popup-form {
+  position: fixed;
+  visibility: hidden;
+  z-index: 1;
+}
+.is-visible {
+  visibility: visible;
+  transition-duration: 200ms;
+}
+
 /* Header styles */
 #header {
   display: flex;
