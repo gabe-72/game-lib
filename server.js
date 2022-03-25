@@ -21,24 +21,52 @@ app.use(express.static("public"));
 
 
 // GET routes
+app.get("/", sendHome);
 app.get("/games", gamesQuery, sendGames);
+app.get("/games/:game_id", sendGame);
 app.get("/home", sendHomepage);
 
-
-function sendGames(req, res) {
-  console.log(req.name);
-  res.sendStatus(200);
-}
+app.param("game_id", function(req, res, next, id) {
+  let sql = "SELECT * FROM games WHERE game_id = ?";
+  db.get(sql, [id], (err, row) => {
+    if (err) return console.error(err.message);
+    req.game = row;
+    next();
+  });
+});
 
 function gamesQuery(req, res, next) {
-  req.name = "";
+  req.name = "%";
   if ("name" in req.query)
-    req.name = decodeURIComponent(req.query.name);
+    req.name = `%${decodeURIComponent(req.query.name)}%`;
   next();
 }
 
-function sendHomepage(req, res) {
-  res.render("pages/homepage", { user: {loggedin: true, userid: 10} });
+function sendGames(req, res) {
+  let games = [];
+  let sql = `SELECT *
+             FROM games
+             WHERE name LIKE ?
+             LIMIT 20`;
+
+  db.each(sql, [req.name], (err, row) => {
+    if (err) return console.error(err.message);
+    games.push(row);
+  }, (err, rows) => {
+    if (err) return console.error(err.message);
+    res.json({ "games": games });
+  });
+}
+
+function sendGame(req, res) {
+  res.format({
+    "application/json": function() { res.json(req.game); },
+    "text/html": function() { res.render("pages/game", { game: game }) }
+  });
+}
+
+function sendHome(req, res) {
+  res.render("pages/games", { user: {loggedin: true, userid: 10} });
 }
 
 
