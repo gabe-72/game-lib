@@ -1,24 +1,22 @@
 function init() {
   document.getElementById("search").addEventListener("keyup", event => {
-    if (event.code === 13) search();
+    if (event.key === "Enter") search();
   });
 }
 
 function search() {
-  let searchText = document.getElementById("search").textContent;
+  let searchText = document.getElementById("search").value;
 
   fetch(`/games?name=${encodeURIComponent(searchText.trim())}`)
-    .then(res => {
-      if (!res.ok) throw new Error("Something went wrong...");
-      refreshList(res.json());
-    })
+    .then(res => res.json())
+    .then(res => refreshList(res.games))
     .catch(err => {
-      console.error("Error retrieving games");
+      console.error(err.message);
     });
 }
 
 function refreshList(games) {
-  let gamesList = document.getElementById("gameslist");
+  let gamesList = document.getElementById("gamesList");
   gamesList.innerHTML = "";
   games.forEach(game => {
     gamesList.appendChild(gameLink(game));
