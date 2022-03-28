@@ -10,8 +10,8 @@ gamesRouter.get("/:game_id", sendGame);
 
 // check if game_id is valid and query the db for it
 gamesRouter.param("game_id", function(req, res, next, id) {
-  findGameById(id, (row) => {
-    res.game = row;
+  findGameById(id, (rows) => {
+    res.game = rows[0];
     next();
   });
 });

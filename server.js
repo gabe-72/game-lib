@@ -1,8 +1,14 @@
 import express from "express";
+import session from "express-session";
 import { gamesRouter } from "./routers/games-router.js";
 
 // setup express
 const app = express();
+app.use(session({
+  secret: "banana cat and shark",
+  resave: false,
+  saveUninitialized: false
+}));
 app.set("view engine", "pug");
 
 // log out the requests

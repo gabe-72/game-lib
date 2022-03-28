@@ -7,5 +7,20 @@ html(lang="en")
   body(onload="init()")
     include ../partial/header.pug
     .middle
+      input#search(type="search" placeholder="Search...")
+      | 
+      button#searchBtn Search
+      br
+      .row
+        div
+          label(for="genreSelect") Genre:
+          select#genreSelect
+            option(value="null") Select Genre
+        div
+          label(for="storeSelect") Sold in:
+          select#storeSelect
+            option(value="null") Select Store
+      br
+      br
       #gamesList
     script(src="/js/games.js")
