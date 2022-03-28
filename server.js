@@ -1,15 +1,8 @@
 import express from "express";
-import sqlite3 from "sqlite3";
+import { gamesRouter } from "./routers/games-router.js";
 
-const app = express(); // setup express
-
-// connect to the db
-let db = new sqlite3.Database("./game_lib.db", (err) => {
-  if (err) return console.error(err.message);
-  console.log("Connected to database");
-});
-
-// setting up the view engine
+// setup express
+const app = express();
 app.set("view engine", "pug");
 
 // log out the requests
@@ -18,58 +11,11 @@ app.use("/", (req, res, next) => {
   next();
 });
 app.use(express.static("public"));
+app.use("/games", gamesRouter);
 
 
 // GET routes
 app.get("/", sendHome);
-app.get("/games", parseQuery, queryGames, sendGames);
-app.get("/games/:game_id", sendGame);
-
-app.param("game_id", function(req, res, next, id) {
-  let sql = "SELECT * FROM games WHERE game_id = ?";
-  db.get(sql, [id], (err, row) => {
-    if (err) return console.error(err.message);
-    res.game = row;
-    next();
-  });
-});
-
-function parseQuery(req, res, next) {
-  req.name = "%";
-  if ("name" in req.query)
-    req.name = `%${decodeURIComponent(req.query.name)}%`;
-  next();
-}
-
-function queryGames(req, res, next) {
-  res.games = { games: [] };
-  let sql = `SELECT *
-             FROM games
-             WHERE name LIKE ?
-             LIMIT 20`;
-
-  db.each(sql, [req.name], (err, row) => {
-    if (err) return console.error(err.message);
-    res.games.games.push(row);
-  }, (err, rows) => {
-    if (err) return console.error(err.message);
-    next();
-  });
-}
-
-function sendGames(req, res) {
-  res.format({
-    "application/json": function() { res.json(res.games) },
-    "text/html": function() { res.render("pages/games", { user: { loggedin: false }}) }
-  });
-}
-
-function sendGame(req, res) {
-  res.format({
-    "application/json": function() { res.json(res.game); },
-    "text/html": function() { res.render("pages/game", { game: res.game }) }
-  });
-}
 
 function sendHome(req, res) {
   res.render("pages/games", { user: {loggedin: true, userid: 10} });

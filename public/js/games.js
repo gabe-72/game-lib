@@ -2,6 +2,7 @@ function init() {
   document.getElementById("search").addEventListener("keyup", event => {
     if (event.key === "Enter") search();
   });
+  search();
 }
 
 function search() {

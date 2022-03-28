@@ -1,0 +1,13 @@
+html(lang="en")
+  head
+    meta(charset="utf-8")
+    link(rel="stylesheet" href="/css/index.css")
+    link(rel="stylesheet" href="/css/input.css")
+    title #{game.name}
+  body
+    include ../partial/header.pug
+    .middle
+      h1 #{game.name}
+      p Developer: #{game.developer} <br>
+      | Publisher: #{game.publisher} <br>
+      | Description: #{game.description}
