@@ -2,9 +2,9 @@
   .row
     a(href="/")
       .btn Home
-  if user.loggedin
+  if session.loggedin
     .row
-      a(href="/user/"+user.userid)
+      a(href="/user/"+session.userid)
         .btn My Account
       a(href="/logout")
         .btn Logout

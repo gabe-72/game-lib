@@ -1,15 +1,14 @@
 import express from "express";
-import session from "express-session";
+import cookieSession from "cookie-session";
 import { gamesRouter } from "./routers/games-router.js";
-import { register, login, logout } from "./util/sess-helper";
+import { register, login, logout } from "./util/sess-helper.js";
 
 // setup express
 const app = express();
-app.use(session({
-  secret: "banana cat and shark",
-  resave: false,
-  saveUninitialized: false,
-  cookie: { maxAge: 24 * 60 * 60 * 1000 } // 1 day
+app.use(cookieSession({
+  name: "session",
+  keys: ["banana cat", "shark turtle"],
+  maxAge: 24 * 60 * 60 * 1000 // 1 day
 }));
 app.set("view engine", "pug");
 
@@ -32,7 +31,7 @@ app.post("/login", login);
 app.post("/logout", logout);
 
 
-function sendHome(req, res) { res.render("pages/games", { user: {loggedin: true, userid: 10} }); }
+function sendHome(req, res) { res.render("pages/games", { session: req.session }); }
 function sendRegister(req, res) { res.render("pages/register", { session: req.session }); }
 function sendLogin(req, res) { res.render("pages/login", { session: req.session }); }
 

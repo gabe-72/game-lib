@@ -1,6 +1,6 @@
 import sqlite3 from "sqlite3";
 
-const DB_PATH = "../game_lib.db";
+const DB_PATH = "./game_lib.db";
 
 function queryDB(sql, parameters, callback) {
   let db = new sqlite3.Database(DB_PATH);

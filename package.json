@@ -10,8 +10,8 @@
   "author": "Gabriel",
   "license": "ISC",
   "dependencies": {
+    "cookie-session": "^2.0.0",
     "express": "^4.17.2",
-    "express-session": "^1.17.2",
     "node-fetch": "^3.2.0",
     "pug": "^3.0.2",
     "sqlite3": "^4.2.0"
