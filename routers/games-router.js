@@ -1,5 +1,5 @@
 import express from "express";
-import { findGameById, findGamesByName } from "../db-helper.js";
+import { findGameById, findGamesByName } from "../util/db-helper.js";
 
 // setup the router
 let gamesRouter = express.Router();

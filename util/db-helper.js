@@ -1,6 +1,6 @@
 import sqlite3 from "sqlite3";
 
-const DB_PATH = "./game_lib.db";
+const DB_PATH = "../game_lib.db";
 
 function queryDB(sql, parameters, callback) {
   let db = new sqlite3.Database(DB_PATH);
@@ -11,12 +11,12 @@ function queryDB(sql, parameters, callback) {
   db.close();
 }
 
-function findGameById(game_id, callback) {
+export function findGameById(game_id, callback) {
   let sql = "SELECT * FROM games WHERE game_id = ?";
   queryDB(sql, [game_id], callback);
 }
 
-function findGamesByName(name, callback) {
+export function findGamesByName(name, callback) {
   let sql = `SELECT *
              FROM games
              WHERE name LIKE ?
@@ -24,12 +24,12 @@ function findGamesByName(name, callback) {
   queryDB(sql, [name], callback);
 }
 
-function getGenres(callback) {
+export function getGenres(callback) {
   let sql = `SELECT * FROM genres`;
   queryDB(sql, [], callback);
 }
 
-function findGamesByGenre(genre_id, callback) {
+export function findGamesByGenre(genre_id, callback) {
   let sql = `SELECT *
              FROM (
                (games)
@@ -39,12 +39,12 @@ function findGamesByGenre(genre_id, callback) {
   queryDB(sql, [genre_id], callback);
 }
 
-function getStores(callback) {
+export function getStores(callback) {
   let sql = `SELECT * FROM stores`;
   queryDB(sql, [], callback);
 }
 
-function findGamesByStore(store, callback) {
+export function findGamesByStore(store, callback) {
   let sql = `SELECT *
     FROM (
       (games)
@@ -54,4 +54,26 @@ function findGamesByStore(store, callback) {
   queryDB(sql, [store], callback);
 }
 
-export { findGameById, findGamesByName, getGenres, findGamesByGenre, getStores, findGamesByStore };
+export function findUserByUsername(username, callback) {
+  let sql = `SELECT *
+    FROM users
+    WHERE username = ?`;
+  queryDB(sql, [username], callback);
+}
+
+export function findUserByEmail(email, callback) {
+  let sql = `SELECT *
+    FROM users
+    WHERE email = ?`;
+  queryDB(sql, [email], callback);
+}
+
+export function addUser(username, email, password, callback) { // check if there are any dupes
+  let statusCode = 200;
+  let db = new sqlite3.Database(DB_PATH);
+  db.run(`INSERT INTO users (username, email, password) VALUES (${username}, ${email}, ${password})`, function(err) {
+    if (err) statusCode = 400;
+    callback(statusCode);
+  });
+  db.close();
+}
