@@ -4,10 +4,7 @@ const DB_PATH = "./game_lib.db";
 
 function queryDB(sql, parameters, callback) {
   let db = new sqlite3.Database(DB_PATH);
-  db.all(sql, parameters, (err, rows) => {
-    if (err) return console.error(err.message);
-    callback(rows);
-  });
+  db.all(sql, parameters, callback);
   db.close();
 }
 
@@ -54,7 +51,7 @@ export function findGamesByStore(store, callback) {
   queryDB(sql, [store], callback);
 }
 
-export function findUserByUsername(username, callback) {
+export function findUserByName(username, callback) {
   let sql = `SELECT *
     FROM users
     WHERE username = ?`;
@@ -69,11 +66,14 @@ export function findUserByEmail(email, callback) {
 }
 
 export function addUser(username, email, password, callback) { // check if there are any dupes
-  let statusCode = 200;
   let db = new sqlite3.Database(DB_PATH);
-  db.run(`INSERT INTO users (username, email, password) VALUES (${username}, ${email}, ${password})`, function(err) {
-    if (err) statusCode = 400;
-    callback(statusCode);
+  let sql = `INSERT INTO users (username, email, password) VALUES (?, ?, ?)`
+  db.run(sql, [username, email, password], (err) => {
+    if (!err) {
+      findUserByName(username, callback);
+    } else {
+      callback(err, null);
+    }
   });
   db.close();
 }

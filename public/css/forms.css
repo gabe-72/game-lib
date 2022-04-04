@@ -1,0 +1,19 @@
+.form {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.form-row {
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 1.5em;
+  line-height: 1.5em;
+  gap: 2px;
+}
+
+#error-text {
+  color: #ff0033;
+  font-size: 0.8em;
+}

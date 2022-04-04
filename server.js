@@ -1,7 +1,7 @@
 import express from "express";
 import cookieSession from "cookie-session";
 import { gamesRouter } from "./routers/games-router.js";
-import { register, login, logout } from "./util/sess-helper.js";
+import { signup, login, logout } from "./util/sess-helper.js";
 
 // setup express
 const app = express();
@@ -22,17 +22,18 @@ app.use("/games", gamesRouter);
 
 // GET routes
 app.get("/", sendHome);
-app.get("/register", sendRegister);
+app.get("/signup", sendSignup);
 app.get("/login", sendLogin);
 
 // POST routes
-app.post("/register", register);
+app.use(express.json());
+app.post("/signup", signup);
 app.post("/login", login);
 app.post("/logout", logout);
 
 
 function sendHome(req, res) { res.render("pages/games", { session: req.session }); }
-function sendRegister(req, res) { res.render("pages/register", { session: req.session }); }
+function sendSignup(req, res) { res.render("pages/signup", { session: req.session }); }
 function sendLogin(req, res) { res.render("pages/login", { session: req.session }); }
 
 // start the server on port 3000

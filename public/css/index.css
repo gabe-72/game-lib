@@ -9,6 +9,11 @@ body {
   margin: 0px;
 }
 
+h1 {
+  font-size: 2em;
+  text-decoration: underline #ffffff 2px;
+}
+
 a {
   text-decoration: none;
   background-color: transparent;

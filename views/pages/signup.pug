@@ -4,7 +4,7 @@ html(lang="en")
     link(rel="stylesheet" href="/css/index.css")
     link(rel="stylesheet" href="/css/input.css")
     link(rel="stylesheet" href="/css/forms.css")
-    title Log in
+    title Sign up
   body(onload="init()")
     include ../partial/header.pug
     .middle
@@ -13,13 +13,17 @@ html(lang="en")
         a(href="/")
           .btn Go to home
       else
-        h1 Log in
+        h1 Sign up
         .form
           .form-row
             label(for="username") Username:
             input#username(type="text")
           .form-row
+            label(for="email") Email:
+            input#email(type="text")
+          .form-row
             label(for="password") Password:
             input#password(type="password")
           #error-text
-          button#submit Log in
+          button#submit Sign up
+    script(src="/js/signup.js")

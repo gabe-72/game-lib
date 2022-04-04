@@ -1,17 +1,32 @@
-import { addUser } from "./db-helper.js";
+import { addUser, findUserByName } from "./db-helper.js";
 
-export function register(req, res) {
-  addUser(req.body.username, req.body.email, req.body.password, (statusCode) => {
-    res.sendStatus(statusCode);
+export function signup(req, res) {
+  addUser(req.body.username, req.body.email, req.body.password, (err, rows) => {
+    if (err) return res.status(400).send("Username/email has already been taken");
+    req.session.userid = rows[0].user_id;
+    res.redirect("/");
   });
 }
 
 export function login(req, res) {
-
+  findUserByName(req.body.username, (err, rows) => {
+    if (err) {
+      console.error(err.message);
+      return res.sendStatus(500);
+    }
+    if (rows.length === 0)
+      return res.status(400).send("Invalid username");
+    const user = rows[0];
+    if (req.body.password === user.password) {
+      req.session.userid = user.user_id;
+      res.redirect("/");
+    } else {
+      res.status(400).send("Invalid username/password");
+    }
+  });
 }
 
 export function logout(req, res) {
-  if (req.session)
-    req.session.destroy();
-  res.sendStatus(200);
+  req.session = null;
+  res.redirect("/");
 }

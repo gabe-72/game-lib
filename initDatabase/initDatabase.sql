@@ -45,7 +45,7 @@ CREATE TABLE genre_of(
 CREATE TABLE users(
   user_id INTEGER PRIMARY KEY,
   email TEXT UNIQUE NOT NULL,
-  username TEXT NOT NULL,
+  username TEXT UNIQUE NOT NULL,
   password TEXT NOT NULL
 );
 

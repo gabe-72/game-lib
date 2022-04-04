@@ -2,15 +2,23 @@
   .row
     a(href="/")
       .btn Home
-  if session.loggedin
+  if session && session.userid
     .row
       a(href="/user/"+session.userid)
         .btn My Account
-      a(href="/logout")
-        .btn Logout
+      button#logout Log out
   else
     .row
-      a(href="/register")
-        .btn Sign Up
       a(href="/login")
         .btn Log In
+      a(href="/signup")
+        .btn Sign Up
+
+  //- log out script
+  script.
+    let logoutBtn = document.getElementById("logout");
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", () => {
+        fetch("/logout", { method: "POST" }).then(() => window.location.reload());
+      });
+    }
