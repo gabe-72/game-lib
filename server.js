@@ -12,11 +12,7 @@ app.use(cookieSession({
 }));
 app.set("view engine", "pug");
 
-// log out the requests
-app.use("/", (req, res, next) => {
-  console.log(req.method, req.url);
-  next();
-});
+// setup the routers
 app.use(express.static("public"));
 app.use("/games", gamesRouter);
 
