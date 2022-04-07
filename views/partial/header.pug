@@ -4,7 +4,7 @@
       .btn Home
   if session && session.userid
     .row
-      a(href="/user/"+session.userid)
+      a(href="/users/"+session.userid)
         .btn My Account
       button#logout Log out
   else

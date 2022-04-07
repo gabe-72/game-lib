@@ -1,6 +1,7 @@
 import sqlite3 from "sqlite3";
 
 const DB_PATH = "./game_lib.db";
+const MAX_AMT = 40;
 
 /**
  * Queries the db with the provided sql script and parameters
@@ -18,39 +19,39 @@ function queryDB(sql, parameters, callback) {
 /**
  * Queries the db for a game that matches the id
  * 
- * @param {Number} game_id - game id to search for
+ * @param {Number} gameid - game id to search for
  * @param {function(err, rows)} callback
  */
-export function findGameById(game_id, callback) {
+export function findGameById(gameid, callback) {
   let sql = "SELECT * FROM games WHERE game_id = ?";
-  queryDB(sql, [game_id], callback);
+  queryDB(sql, [gameid], callback);
 }
 
 /**
  * Queries the db for a game that matches the given conditions
  * 
  * @param {string} name - name of the game
- * @param {Number} genre_id - genre id to search
- * @param {Number} store_id - store id to serach
+ * @param {Number} genreid - genre id to search
+ * @param {Number} storeid - store id to serach
  * @param {function(err, rows)} callback
  */
-export function findGames(name, genre_id, store_id, callback) {
+export function findGames(name, genreid, storeid, callback) {
   let sql = `SELECT *
     FROM (
       (games)
       NATURAL JOIN (
-        SELECT game_id FROM genre_of WHERE $genre_id = -1 OR genre_id = $genre_id
+        SELECT game_id FROM genre_of WHERE $genreid = -1 OR genre_id = $genreid
         INTERSECT
-        SELECT game_id FROM sold_in WHERE $store_id = -1 OR store_id = $store_id
+        SELECT game_id FROM sold_in WHERE $storeid = -1 OR store_id = $storeid
       )
     )
     WHERE name LIKE $name
-    LIMIT 40`;
+    LIMIT ${MAX_AMT}`;
 
   let parameters = {
     $name: name,
-    $genre_id: Number.parseInt(genre_id),
-    $store_id: Number.parseInt(store_id)
+    $genreid: Number.parseInt(genreid),
+    $storeid: Number.parseInt(storeid)
   };
   queryDB(sql, parameters, callback);
 }
@@ -73,6 +74,11 @@ export function getGenres(callback) {
 export function getStores(callback) {
   let sql = `SELECT * FROM stores`;
   queryDB(sql, [], callback);
+}
+
+export function findUserById(userid, callback) {
+  let sql = "SELECT * FROM users WHERE user_id = ?";
+  queryDB(sql, [userid], callback);
 }
 
 /**
@@ -120,4 +126,14 @@ export function addUser(username, email, password, callback) { // check if there
     }
   });
   db.close();
+}
+
+export function findGamesByUser(userid, callback) {
+  let sql = `SELECT *
+    FROM (
+      (games)
+      NATURAL JOIN
+      (SELECT game_id FROM owns WHERE user_id = $userid)
+    )`;
+  queryDB(sql, { $userid: userid }, callback);
 }

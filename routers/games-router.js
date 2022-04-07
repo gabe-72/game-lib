@@ -2,16 +2,16 @@ import express from "express";
 import { findGameById, findGames, getGenres, getStores } from "../util/db-helper.js";
 
 // setup the router
-let gamesRouter = express.Router();
+let router = express.Router();
 
 // GET routes
-gamesRouter.get("/", parseQuery, queryGames, sendGames);
-gamesRouter.get("/genres", sendGenres);
-gamesRouter.get("/stores", sendStores);
-gamesRouter.get("/:game_id", sendGame);
+router.get("/", parseQuery, queryGames, sendGames);
+router.get("/genres", sendGenres);
+router.get("/stores", sendStores);
+router.get("/:gameid", sendGame);
 
-// check if game_id is valid and query the db for it
-gamesRouter.param("game_id", function(req, res, next, id) {
+// check if gameid is valid and query the db for it
+router.param("gameid", function(req, res, next, id) {
   findGameById(id, (err, rows) => {
     res.game = null;
     if (!err)
@@ -26,7 +26,7 @@ function parseQuery(req, res, next) {
 }
 
 function queryGames(req, res, next) {
-  findGames(req.query.name, req.query.genre_id, req.query.store_id, (err, rows) => {
+  findGames(req.query.name, req.query.genreid, req.query.storeid, (err, rows) => {
     if (err) {
       console.error(err.message);
       return res.sendStatus(500);
@@ -72,4 +72,4 @@ function sendStores(req, res) {
   });
 }
 
-export { gamesRouter };
+export { router as gamesRouter };

@@ -1,0 +1,16 @@
+html(lang="en")
+  head
+    meta(charset="utf-8")
+    link(rel="stylesheet" href="/css/index.css")
+    link(rel="stylesheet" href="/css/input.css")
+    title Profile
+  body
+    include ../partial/header.pug
+    .middle
+      h1 #{user.username}
+      p email: #{user.email}
+      h2 Games owned
+      #gamesList
+        each game in games
+          a(href="/games/"+game.game_id)
+            .gameLinkDiv #{game.name}

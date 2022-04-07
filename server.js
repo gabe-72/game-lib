@@ -1,6 +1,7 @@
 import express from "express";
 import cookieSession from "cookie-session";
 import { gamesRouter } from "./routers/games-router.js";
+import { usersRouter } from "./routers/users-router.js";
 import { signup, login, logout } from "./util/sess-helper.js";
 
 // setup express
@@ -15,6 +16,7 @@ app.set("view engine", "pug");
 // setup the routers
 app.use(express.static("public"));
 app.use("/games", gamesRouter);
+app.use("/users", usersRouter);
 
 // GET routes
 app.get("/", sendHome);

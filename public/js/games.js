@@ -16,12 +16,12 @@ function search() {
   let searchText = document.getElementById("search").value;
 
   let genreSelect = document.getElementById("genreSelect");
-  let genre_id = genreSelect.options[genreSelect.selectedIndex].value;
+  let genreid = genreSelect.options[genreSelect.selectedIndex].value;
 
   let storeSelect = document.getElementById("storeSelect");
-  let store_id = storeSelect.options[storeSelect.selectedIndex].value;
+  let storeid = storeSelect.options[storeSelect.selectedIndex].value;
 
-  fetch(`/games?name=${encodeURIComponent(searchText.trim())}&genre_id=${genre_id}&store_id=${store_id}`)
+  fetch(`/games?name=${encodeURIComponent(searchText.trim())}&genreid=${genreid}&storeid=${storeid}`)
   .then(res => res.json())
   .then(res => refreshList(res.games))
   .catch(err => console.error(err.message));
