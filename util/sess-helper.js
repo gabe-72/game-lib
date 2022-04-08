@@ -13,13 +13,10 @@ export function login(req, res) {
   findUserByName(req.body.username, (err, rows) => {
     if (err) return res.sendStatus(500);
 
-    if (rows.length === 0) // no user found
-      return res.status(400).send("Invalid username");
+    if (rows.length === 0 || req.body.password !== rows[0].password)
+      return res.sendStatus(400);
 
     const user = rows[0];
-    if (req.body.password !== user.password) // password matching?
-      return res.status(400).send("Invalid username/password");
-
     req.session.userid = user.user_id;
 
     // find the games that the user owns

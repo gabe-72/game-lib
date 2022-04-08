@@ -1,12 +1,12 @@
 function init() {
-  document.getElementById("submit").addEventListener("click", signup);
+  document.getElementById("submit").addEventListener("click", login);
 }
 
-function signup() {
+function login() {
   let data = getData();
   if (!data) return; // if data is null
   
-  fetch("/signup", {
+  fetch("/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -26,10 +26,9 @@ function signup() {
 function getData() {
   let data = {
     username: document.getElementById("username").value,
-    email: document.getElementById("email").value,
     password: document.getElementById("password").value
   };
-  if (data.username === "" || data.email === "" || data.password === "") {
+  if (data.username === "" || data.password === "") {
     document.getElementById("error-text").textContent = "Fields cannot be empty!";
     return null;
   }

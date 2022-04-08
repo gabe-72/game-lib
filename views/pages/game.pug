@@ -3,11 +3,17 @@ html(lang="en")
     meta(charset="utf-8")
     link(rel="stylesheet" href="/css/index.css")
     link(rel="stylesheet" href="/css/input.css")
+    script(src="/js/game.js" defer)
     title #{game.name}
-  body
+  body(onload="init()")
     include ../partial/header.pug
     .middle
       h1 #{game.name}
+      if session && session.userid
+        if (session.games.includes(game.game_id))
+          button#addToLib(type="button" disabled=true) Already in Library
+        else
+          button#addToLib(type="button") Add to Library
       p Developer: #{game.developer} <br>
         | Publisher: #{game.publisher} <br><br>
         | !{game.description}

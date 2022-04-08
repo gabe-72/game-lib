@@ -65,7 +65,6 @@ a {
   transition-duration: 200ms;
 }
 
-/* Header styles */
 #header {
   display: flex;
   flex-direction: row;

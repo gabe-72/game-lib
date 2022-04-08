@@ -6,6 +6,10 @@ import { signup, login, logout } from "./util/sess-helper.js";
 
 // setup express
 const app = express();
+app.use("/", (req, res, next) => {
+  console.log(req.method + ": " + req.url);
+  next();
+});
 app.use(cookieSession({
   name: "session",
   keys: ["banana cat", "shark turtle"],

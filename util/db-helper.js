@@ -115,7 +115,7 @@ export function findUserByEmail(email, callback) {
  * @param {string} password - password of the account
  * @param {function(err, rows)} callback
  */
-export function addUser(username, email, password, callback) { // check if there are any dupes
+export function addUser(username, email, password, callback) {
   let db = new sqlite3.Database(DB_PATH);
   let sql = `INSERT INTO users (username, email, password) VALUES (?, ?, ?)`
   db.run(sql, [username, email, password], (err) => {
@@ -128,6 +128,12 @@ export function addUser(username, email, password, callback) { // check if there
   db.close();
 }
 
+/**
+ * Queries for the games that the user owns
+ * 
+ * @param {Number} userid - id of the user
+ * @param {function(err, rows)} callback
+ */
 export function findGamesByUser(userid, callback) {
   let sql = `SELECT *
     FROM (
@@ -136,4 +142,18 @@ export function findGamesByUser(userid, callback) {
       (SELECT game_id FROM owns WHERE user_id = $userid)
     )`;
   queryDB(sql, { $userid: userid }, callback);
+}
+
+/**
+ * Adds a game to a user
+ * 
+ * @param {Number} gameid - id of the game
+ * @param {Number} userid - id of the user
+ * @param {function(err)} callback
+ */
+export function addGameToUser(gameid, userid, callback) {
+  let db = new sqlite3.Database(DB_PATH);
+  let sql = `INSERT INTO owns (game_id, user_id) VALUES ($gameid, $userid)`;
+  db.run(sql, { $gameid: gameid, $userid: userid }, callback);
+  db.close();
 }

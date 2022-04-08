@@ -1,5 +1,5 @@
 import express from "express";
-import { findGameById, findGames, getGenres, getStores } from "../util/db-helper.js";
+import { addGameToUser, findGameById, findGames, getGenres, getStores } from "../util/db-helper.js";
 
 // setup the router
 let router = express.Router();
@@ -9,6 +9,9 @@ router.get("/", parseQuery, queryGames, sendGames);
 router.get("/genres", sendGenres);
 router.get("/stores", sendStores);
 router.get("/:gameid", sendGame);
+
+// PUT routes
+router.put("/:gameid", updateUserGames);
 
 // check if gameid is valid and query the db for it
 router.param("gameid", function(req, res, next, id) {
@@ -69,6 +72,16 @@ function sendStores(req, res) {
       return;
     }
     res.json(rows);
+  });
+}
+
+function updateUserGames(req, res) {
+  if (req.session.games.includes(res.game.game_id))
+    return res.sendStatus(200);
+  addGameToUser(res.game.game_id, req.session.userid, (err) => {
+    if (!err)
+      req.session.games.push(res.game.game_id);
+    res.sendStatus(200);
   });
 }
 

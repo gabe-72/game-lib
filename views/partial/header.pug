@@ -19,6 +19,6 @@
     let logoutBtn = document.getElementById("logout");
     if (logoutBtn) {
       logoutBtn.addEventListener("click", () => {
-        fetch("/logout", { method: "POST" }).then(() => window.location.reload());
+        fetch("/logout", { method: "POST" }).then(() => window.location.href="/");
       });
     }
